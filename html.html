@@ -1,13 +1,12 @@
-<template name="home">
+<template name="Home">
     {{>zoomy}}
     {{>navbar}}
 </template>
 
 
 
-
 <template name="navbar">
-<div class="navbar navbar-margin">
+    <div class="navbar navbar-margin">
       <div class="navbar-inner">
         <div class="container-fluid">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -18,7 +17,14 @@
           <a class="brand" href="#">Green Leaf Realty</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+            <!--
+              <li class="active"><a href="/"><i class="icon-home"></i> Home</a></li>
+              <li class=""><a href="/search"><i class="icon-search"></i> Search</a></li>
+            -->
+
+            {{#each route}}
+                <li class="{{#if isActive}}active{{/if}}"><a href="{{options.path}}">{{#if options.icon}}<i class="{{options.icon}}"></i> {{/if}}{{name}}</a></li>
+            {{/each}}
             </ul>
             {{>zoomy-controls}}
           </div>
