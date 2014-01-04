@@ -1,0 +1,28 @@
+<template name="home">
+    {{>zoomy}}
+    {{>navbar}}
+</template>
+
+
+
+
+<template name="navbar">
+<div class="navbar navbar-margin">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Green Leaf Realty</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+            </ul>
+            {{>zoomy-controls}}
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
