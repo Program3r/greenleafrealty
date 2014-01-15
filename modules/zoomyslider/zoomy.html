@@ -2,7 +2,7 @@
 	    <div class="zoomViewport zoomySlider">
 			<div id="container" class="zoomContainer">
                 {{#each photos}}
-                    <div class="zoomTarget photo">
+                    <div id='{{stamp}}' class="zoomTarget photo" style='left:{{offset}}px; top:{{offset}}px; transform:rotate({{rotation}}deg); -ms-transform:rotate({{rotation}}deg); -moz-transform:rotate({{rotation}}deg);  -webkit-transform:rotate({{rotation}}deg); -o-transform:rotate({{rotation}}deg);'>
                         <!--<img onload='javascript:Session.set("photosloaded",true);checkplayliststarted();' src="{{src}}">-->
                         <div class='description'>
                             {{{desc}}}

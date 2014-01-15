@@ -11,25 +11,27 @@ if(Meteor.isClient){
             var desc = json.items[i].description
             var photo = json.items[i].media.m.replace('_m','_b');
             var jdesc = $('<div></div>');
+            var stamp = new Date().getTime();
             jdesc.append(desc);
-            jdesc.find('img').attr('src',jdesc.find('img').attr('src').replace('_m','_b'));
+            $(jdesc.find('p')[0]).remove();
+            jdesc.find('img').attr('src',jdesc.find('img').attr('src').replace('_m','_b')+'?_='+stamp);
             jdesc.find('img').attr('width','').attr('height','').attr('onload','javascript:Session.set("photosloaded",true);checkplayliststarted();');
-            filtereditems.push({src:photo,desc:jdesc.html()});
-            console.log(jdesc.html())
+            filtereditems.push({src:photo,desc:jdesc.html(),stamp:stamp,offset:((Math.random()*(800*i))+(100*i)),rotation:((Math.random()*360)+1)});
+            //console.log(jdesc.html())
         }
         Session.set('photos',filtereditems);
     }
     
     checkplayliststarted = function(){
         if(Session.get('slideshowstarted')!=true){
-            Session.set('slideshowstarted',true)
+            Session.set('slideshowstarted',true);
             Meteor.call('playSlideshow');
         }
     }
     
     Meteor.startup(function() {
-            //var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=111721254@N07&format=json';
-            var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=78681269@N03&format=json';
+            var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=111721254@N07&format=json';
+            //var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=78681269@N03&format=json';
             $.ajax({
                 type: 'GET',
                 url: url,
