@@ -1,15 +1,14 @@
 <template name="zoomy">
 	    <div class="zoomViewport zoomySlider">
 			<div id="container" class="zoomContainer">
-                <div id="craterlake" class="zoomTarget photo active">
-                    <img src="http://upload.wikimedia.org/wikipedia/commons/3/31/Crater_Lake_National_Park_Oregon.jpg">
-                </div>
-                <div id="craterlake1" class="zoomTarget photo">
-                    <img src="http://upload.wikimedia.org/wikipedia/commons/b/bb/Rogue_River_Oregon_USA.jpg">
-                </div>
-                <div id="craterlake2" class="zoomTarget photo">
-                    <img src="http://www.earthrandom.com/wp-content/uploads/2012/06/Proxy-Falls-Oregon1.jpg">
-                </div>
+                {{#each photos}}
+                    <div id='{{stamp}}' class="zoomTarget photo" style='left:{{offset}}px; top:{{offset}}px; transform:rotate({{rotation}}deg); -ms-transform:rotate({{rotation}}deg); -moz-transform:rotate({{rotation}}deg);  -webkit-transform:rotate({{rotation}}deg); -o-transform:rotate({{rotation}}deg);'>
+                        <!--<img onload='javascript:Session.set("photosloaded",true);checkplayliststarted();' src="{{src}}">-->
+                        <div class='description'>
+                            {{{desc}}}
+                        </div>
+                    </div>
+                {{/each}}
 			</div>
 	    </div>
 </template>
