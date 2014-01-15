@@ -1,5 +1,11 @@
 /* these are not necessary */
 
+.photo {
+    display:inline-block;
+    padding: 40px;
+    border: 1px solid black;
+}
+
 .zoomContainer {
 	margin:0;
     padding:0;

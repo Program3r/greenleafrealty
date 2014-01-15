@@ -1,8 +1,49 @@
 if(Meteor.isClient){
     //$("#craterlake2").zoomTo({root:$('.zoomContainer'), targetsize:4})
-    Template.zoomy.rendered = function(){
-        Meteor.call('playSlideshow');
+    
+    Template.zoomy.photos=function(){
+        return Session.get('photos')
     }
+    
+    jsonFlickrFeed = function(json){
+        var filtereditems=[];
+        for (i=0;i<json.items.length;i++){
+            var desc = json.items[i].description
+            var photo = json.items[i].media.m.replace('_m','_b');
+            var jdesc = $('<div></div>');
+            jdesc.append(desc);
+            jdesc.find('img').attr('src',jdesc.find('img').attr('src').replace('_m','_b'));
+            jdesc.find('img').attr('width','').attr('height','').attr('onload','javascript:Session.set("photosloaded",true);checkplayliststarted();');
+            filtereditems.push({src:photo,desc:jdesc.html()});
+            console.log(jdesc.html())
+        }
+        Session.set('photos',filtereditems);
+    }
+    
+    checkplayliststarted = function(){
+        if(Session.get('slideshowstarted')!=true){
+            Session.set('slideshowstarted',true)
+            Meteor.call('playSlideshow');
+        }
+    }
+    
+    Meteor.startup(function() {
+            //var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=111721254@N07&format=json';
+            var url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=78681269@N03&format=json';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                async: false,
+                contentType: "application/json",
+                dataType: 'jsonp',
+                success: function(json) {
+                    //console.log(json);
+                },
+                error: function(e) {
+                    //console.log(e.message);
+                }
+            });
+    })
     
     Meteor.methods({
         'playSlideshow':function(){
@@ -15,22 +56,29 @@ if(Meteor.isClient){
             }
         },
         'playNext':function(){
-            var next = $(".zoomySlider .zoomTarget.active").removeClass("active");
-            if(next.next().length > 0){
-                next.next().addClass("active");
-            }else{
-                $(".zoomySlider .zoomTarget").first().addClass("active");
+            if(Session.get('photosloaded')== true){
+                if($(".zoomySlider .zoomTarget.active").length == 0){
+                    $($(".zoomySlider .zoomTarget")[0]).addClass('active');
+                }
+                var next = $(".zoomySlider .zoomTarget.active").removeClass("active");
+                if(next.next().length > 0){
+                    next.next().addClass("active");
+                }else{
+                    $(".zoomySlider .zoomTarget").first().addClass("active");
+                }
+                $(".zoomySlider .zoomTarget.active").zoomTo({root:$('.zoomySlider .zoomContainer'), targetsize:1, duration:2000, ease:"ease-in-out"});
             }
-            $(".zoomySlider .zoomTarget.active").zoomTo({root:$('.zoomySlider .zoomContainer'), targetsize:2, duration:2000, ease:"ease-in-out"});
         },
         'playPrev':function(){
-            var prev = $(".zoomySlider .zoomTarget.active").removeClass("active");
-            if(prev.prev().length > 0){
-                prev.prev().addClass("active");
-            }else{
-                $(".zoomySlider .zoomTarget").last().addClass("active");
+            if(Session.get('photosloaded')== true){
+                var prev = $(".zoomySlider .zoomTarget.active").removeClass("active");
+                if(prev.prev().length > 0){
+                    prev.prev().addClass("active");
+                }else{
+                    $(".zoomySlider .zoomTarget").last().addClass("active");
+                }
+                $(".zoomySlider .zoomTarget.active").zoomTo({root:$('.zoomySlider .zoomContainer'), targetsize:1, duration:2000, ease:"ease-in-out"});
             }
-            $(".zoomySlider .zoomTarget.active").zoomTo({root:$('.zoomySlider .zoomContainer'), targetsize:2, duration:2000, ease:"ease-in-out"});
         },
         'reloadCurrent':function(){
             $(".zoomySlider .zoomTarget.active").zoomTo({root:$('.zoomySlider .zoomContainer'), targetsize:2, ease:"ease-in-out"});
