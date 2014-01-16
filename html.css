@@ -1,3 +1,7 @@
 .navbar-margin{
     margin:30px;
 }
+.gc-cs-link, .badge.phone{
+    color:white !important;
+    text-decoration:none !important;
+}
